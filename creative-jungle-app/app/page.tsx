@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="bg-gray-100 max-w-screen-xl mx-auto">
+    <div className="max-w-screen-sm mx-auto">
       <Header />
       <CardList />
       <Footer />

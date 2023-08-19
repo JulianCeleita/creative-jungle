@@ -8,6 +8,7 @@
         "addWords": true
       }
     ],
+    "words": ["Buscar", "HeroIcons"],
     "dictionaries": ["project-words"],
     "ignorePaths": ["node_modules", "/project-words.txt"]
   }
