@@ -1,13 +1,15 @@
-import { Post, PostId, type Action, type State } from "@/typings";
+"use client"
+import { type Post, type PostId, type Action, type State } from "@/typings";
 import { useReducer } from "react";
 
-const initialState: State = {
+export const initialState: State = {
   postList: [],
   error: null,
   isLoading: false,
+  filter: null,
 };
 
-function reducer(state: State, action: Action) {
+export function reducer(state: State, action: Action) {
   const { type } = action;
   if (type === "LOADING_NEW_CARDS") {
     return {
@@ -17,9 +19,8 @@ function reducer(state: State, action: Action) {
   }
   if (type === "ADD_NEW_CARDS") {
     return {
-      postList: [...state.postList, ...action.payload],
-      isLoading: false,
-      error: null,
+      ...initialState,
+      postList: [...state.postList, ...action.payload], 
     };
   }
   if (type === "LOADING_FAILED_CARDS") {
@@ -38,11 +39,17 @@ function reducer(state: State, action: Action) {
       postList: newPostList,
     };
   }
+  if (type === "SET_FILTER") { 
+    return {
+      ...state,
+      filter: action.payload,
+    };
+  }
   return state;
 }
 
 export function useStore() {
-  const [{ postList, error, isLoading }, dispatch] = useReducer(
+  const [{ postList, error, isLoading, filter }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -63,13 +70,22 @@ export function useStore() {
     dispatch({ type: "DELETE_CARD", payload });
   };
 
+  const setFilter = (payload: PostId | null) => { 
+    dispatch({ type: "SET_FILTER", payload });
+  };
+const maxCardId= postList.reduce((acc, post) => Math.max(acc, post.id), 0);
+
   return {
     postList,
     error,
     isLoading,
+    filter,
     setLoadingNewCards,
     setAddNewCards,
     setLoadingFailedCards,
     setDeleteCard,
+    setFilter,
+    maxCardId
   };
 }
+export type Store = ReturnType<typeof useStore>;

@@ -10,6 +10,7 @@ interface Post {
     postList: Post[];
     error: any;
     isLoading: boolean;
+    filter: number | null;
   }
   export type PostId = number;
   
@@ -17,5 +18,6 @@ interface Post {
     | { type: "LOADING_NEW_CARDS" }
     | { type: "ADD_NEW_CARDS"; payload: Post[] }
     | { type: "LOADING_FAILED_CARDS"; payload: any }
-    | { type: "DELETE_CARD"; payload: PostId };
+    | { type: "DELETE_CARD"; payload: PostId }
+    | { type: "SET_FILTER"; payload: PostId | null }
   
