@@ -1,67 +1,68 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Card from "./Card";
-import SearchBar from "./SearchBar";
 import { type Post } from "@/typings";
 import { postApiURL } from "@/config/urls.config";
-import { useStore } from "@/store/useStore";
+import { StoreContext } from "@/store/StoreContext";
+import { v4 as uuidv4 } from 'uuid';
+import AddMore from "./AddMore";
 
-export const CardList = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  
+export const CardList = () => { 
   const {
     postList,
     error,
+    filter,
     isLoading,
     setLoadingNewCards,
     setAddNewCards,
     setLoadingFailedCards,
-    setDeleteCard
-  } = useStore();
+    setDeleteCard,
+  } = useContext(StoreContext);
 
   useEffect(() => {
     async function fetchPosts() {
       setLoadingNewCards();
       try {
-        const response = await fetch(postApiURL(0,3));
-        setAddNewCards(await response.json() as Post[])
-        
+        const response = await fetch(postApiURL(0, 5));
+        setAddNewCards((await response.json()) as Post[]);
       } catch (error) {
         setLoadingFailedCards(error);
       }
     }
 
     fetchPosts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
-  useEffect(() => {
-    setPosts(postList);
-  }, [postList]);
-  
 
   const handleDelete = (id: number) => {
-      setDeleteCard(id);
+    setDeleteCard(id);
   };
 
-  if (error) {
-    return <div>Ha ocurrido un error</div>;
+  let filteredPosts = [...postList]; 
+  if (filter !== null) {
+    filteredPosts = postList.filter((post) => post.id === filter); 
   }
   if (isLoading) {
     return <div>Cargando...</div>;
   }
+  if (error) {
+    return <div>Ha ocurrido un error</div>;
+  }
+
   return (
     <section>
       <div className="grid grid-flow-row-dense grid-cols-1 mx-5 mb-16">
-        {posts.map((post) => (
+        {filteredPosts.map((post,index) => (
           <Card
-            key={post.id}
+            key={uuidv4()}
             id={post.id}
             title={post.title}
             body={post.body}
-            handleDelete={handleDelete} 
+            handleDelete={handleDelete}
           />
         ))}
+      <AddMore />
       </div>
     </section>
   );

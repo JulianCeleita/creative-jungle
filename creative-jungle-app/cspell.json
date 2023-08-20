@@ -2,13 +2,25 @@
     "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
     "version": "0.2",
     "dictionaryDefinitions": [
-      {
-        "name": "project-words",
-        "path": "./project-words.txt",
-        "addWords": true
-      }
+        {
+            "name": "project-words",
+            "path": "./project-words.txt",
+            "addWords": true
+        }
     ],
-    "words": ["Buscar", "HeroIcons"],
-    "dictionaries": ["project-words"],
-    "ignorePaths": ["node_modules", "/project-words.txt"]
-  }
+    "words": [
+        "Buscar",
+        "Cargando",
+        "HeroIcons",
+        "ocurrido",
+        "resultados",
+        "uuidv"
+    ],
+    "dictionaries": [
+        "project-words"
+    ],
+    "ignorePaths": [
+        "node_modules",
+        "/project-words.txt"
+    ]
+}
